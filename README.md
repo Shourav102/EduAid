@@ -75,5 +75,5 @@ EduAid is a web-based platform designed to **reduce educational inequality** by 
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/yourusername/EduAid.git
+git clone https://github.com/shourav102/EduAid.git
 cd EduAid
