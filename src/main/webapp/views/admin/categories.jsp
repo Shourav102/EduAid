@@ -12,7 +12,7 @@
 <body>
 
 <nav class="navbar">
-    <a href="${pageContext.request.contextPath}/admin/dashboard" class="navbar-brand">
+    <a href="${pageContext.request.contextPath}/home" class="navbar-brand">
         📚 Edu<span>Aid</span> <span style="font-size:0.75rem; opacity:0.75; font-weight:400;">Admin</span>
     </a>
     <button class="navbar-toggle" aria-label="Toggle navigation">
@@ -22,7 +22,8 @@
         <li><a href="${pageContext.request.contextPath}/admin/dashboard">Dashboard</a></li>
         <li><a href="${pageContext.request.contextPath}/admin/users">Users</a></li>
         <li><a href="${pageContext.request.contextPath}/admin/categories" class="active">Categories</a></li>
-        <li><a href="${pageContext.request.contextPath}/about">About</a></li>
+        <li><a href="${pageContext.request.contextPath}/admin/inquiries">Inquiries</a></li>
+        <li><a href="${pageContext.request.contextPath}/about">About Us</a></li>
         <li><a href="${pageContext.request.contextPath}/auth?action=logout" class="btn-nav-accent">Logout</a></li>
     </ul>
 </nav>
@@ -41,7 +42,6 @@
             </a>
         </div>
 
-        <%-- Flash messages --%>
         <c:if test="${not empty successMessage}">
             <div class="alert alert-success">✅ ${successMessage}</div>
         </c:if>
@@ -63,44 +63,42 @@
                     <div class="table-wrapper">
                         <table class="data-table">
                             <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Category Name</th>
-                                    <th>Description</th>
-                                    <th>Created</th>
-                                    <th>Actions</th>
-                                </tr>
+                            <tr>
+                                <th>#</th>
+                                <th>Category Name</th>
+                                <th>Description</th>
+                                <th>Created</th>
+                                <th>Actions</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                <c:forEach var="cat" items="${categories}" varStatus="s">
-                                    <tr>
-                                        <td>${s.count}</td>
-                                        <td><strong>${cat.name}</strong></td>
-                                        <td>${cat.description}</td>
-                                        <td style="font-size:0.8rem; color:var(--text-light);">
+                            <c:forEach var="cat" items="${categories}" varStatus="s">
+                                <tr>
+                                    <td>${s.count}</td>
+                                    <td><strong>${cat.name}</strong></td>
+                                    <td>${cat.description}</td>
+                                    <td style="font-size:0.8rem; color:var(--text-light);">
                                             ${cat.createdAt}
-                                        </td>
-                                        <td>
-                                            <div style="display:flex; gap:0.4rem;">
-                                                <%-- Edit --%>
-                                                <a href="${pageContext.request.contextPath}/admin/categories?action=edit&id=${cat.categoryId}"
-                                                   class="btn btn-outline btn-sm">
-                                                    ✏ Edit
-                                                </a>
-                                                <%-- Delete --%>
-                                                <form action="${pageContext.request.contextPath}/admin/categories"
-                                                      method="post"
-                                                      onsubmit="return confirm('Delete category \'${cat.name}\'? This cannot be undone.');">
-                                                    <input type="hidden" name="action"     value="delete">
-                                                    <input type="hidden" name="categoryId" value="${cat.categoryId}">
-                                                    <button type="submit" class="btn btn-danger btn-sm">
-                                                        🗑 Delete
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
+                                    </td>
+                                    <td>
+                                        <div style="display:flex; gap:0.4rem;">
+                                            <a href="${pageContext.request.contextPath}/admin/categories?action=edit&id=${cat.categoryId}"
+                                               class="btn btn-outline btn-sm">
+                                                ✏ Edit
+                                            </a>
+                                            <form action="${pageContext.request.contextPath}/admin/categories"
+                                                  method="post"
+                                                  onsubmit="return confirm('Delete category \'${cat.name}\'? This cannot be undone.');">
+                                                <input type="hidden" name="action" value="delete">
+                                                <input type="hidden" name="categoryId" value="${cat.categoryId}">
+                                                <button type="submit" class="btn btn-danger btn-sm">
+                                                    🗑 Delete
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </c:forEach>
                             </tbody>
                         </table>
                     </div>

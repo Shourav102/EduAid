@@ -8,7 +8,7 @@
     <display-name>EduAid - Educational Resource Donation System</display-name>
 
     <!-- ============================================================
-         Default welcome page - redirects to login
+         Default welcome page - redirects to home
          ============================================================ -->
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
