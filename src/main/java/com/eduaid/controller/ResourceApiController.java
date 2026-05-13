@@ -1,6 +1,7 @@
 package com.eduaid.controller;
 
 import com.eduaid.util.DBConnection;
+import com.eduaid.util.PasswordUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -213,6 +214,62 @@ public class ResourceApiController extends HttpServlet {
                 try (Connection conn = DBConnection.getConnection();
                      PreparedStatement ps = conn.prepareStatement(sql)) {
                     ps.setInt(1, resourceId);
+                    ps.executeUpdate();
+                    out.print("{\"success\":true}");
+                }
+            }
+            // Update user profile (NEW)
+            else if ("/user/profile/update".equals(path)) {
+                String fullName = req.getParameter("fullName");
+                String phone = req.getParameter("phone");
+                String address = req.getParameter("address");
+                String institution = req.getParameter("institution");
+
+                String sql = "UPDATE users SET full_name = ?, phone = ?, address = ?, institution = ? WHERE user_id = ?";
+                try (Connection conn = DBConnection.getConnection();
+                     PreparedStatement ps = conn.prepareStatement(sql)) {
+                    ps.setString(1, fullName);
+                    ps.setString(2, phone);
+                    ps.setString(3, address);
+                    ps.setString(4, institution);
+                    ps.setInt(5, userId);
+                    ps.executeUpdate();
+
+                    // Update session attributes
+                    session.setAttribute("userName", fullName);
+                    out.print("{\"success\":true}");
+                }
+            }
+            // Change password (NEW)
+            else if ("/user/password/change".equals(path)) {
+                String currentPassword = req.getParameter("currentPassword");
+                String newPassword = req.getParameter("newPassword");
+
+                // First verify current password
+                String getHashSql = "SELECT password_hash FROM users WHERE user_id = ?";
+                try (Connection conn = DBConnection.getConnection();
+                     PreparedStatement ps = conn.prepareStatement(getHashSql)) {
+                    ps.setInt(1, userId);
+                    ResultSet rs = ps.executeQuery();
+                    if (rs.next()) {
+                        String storedHash = rs.getString("password_hash");
+                        if (!PasswordUtil.verifyPassword(currentPassword, storedHash)) {
+                            out.print("{\"success\":false, \"error\":\"Current password is incorrect\"}");
+                            return;
+                        }
+                    } else {
+                        out.print("{\"success\":false, \"error\":\"User not found\"}");
+                        return;
+                    }
+                }
+
+                // Update to new password
+                String newHash = PasswordUtil.hashPassword(newPassword);
+                String updateSql = "UPDATE users SET password_hash = ? WHERE user_id = ?";
+                try (Connection conn = DBConnection.getConnection();
+                     PreparedStatement ps = conn.prepareStatement(updateSql)) {
+                    ps.setString(1, newHash);
+                    ps.setInt(2, userId);
                     ps.executeUpdate();
                     out.print("{\"success\":true}");
                 }
