@@ -12,7 +12,7 @@
 <body>
 
 <nav class="navbar">
-    <a href="${pageContext.request.contextPath}/admin/dashboard" class="navbar-brand">
+    <a href="${pageContext.request.contextPath}/home" class="navbar-brand">
         📚 Edu<span>Aid</span> <span style="font-size:0.75rem; opacity:0.75; font-weight:400;">Admin</span>
     </a>
     <button class="navbar-toggle" aria-label="Toggle navigation">
@@ -22,7 +22,8 @@
         <li><a href="${pageContext.request.contextPath}/admin/dashboard">Dashboard</a></li>
         <li><a href="${pageContext.request.contextPath}/admin/users">Users</a></li>
         <li><a href="${pageContext.request.contextPath}/admin/categories" class="active">Categories</a></li>
-        <li><a href="${pageContext.request.contextPath}/about">About</a></li>
+        <li><a href="${pageContext.request.contextPath}/admin/inquiries">Inquiries</a></li>
+        <li><a href="${pageContext.request.contextPath}/about">About Us</a></li>
         <li><a href="${pageContext.request.contextPath}/auth?action=logout" class="btn-nav-accent">Logout</a></li>
     </ul>
 </nav>
@@ -35,7 +36,6 @@
             <p>${editMode ? 'Update the category name and description.' : 'Create a new resource category for EduAid.'}</p>
         </div>
 
-        <%-- General error --%>
         <c:if test="${not empty errors['general']}">
             <div class="alert alert-error">⚠ ${errors['general']}</div>
         </c:if>
@@ -46,13 +46,11 @@
                   novalidate
                   id="categoryForm">
 
-                <%-- Hidden fields --%>
                 <input type="hidden" name="action" value="${editMode ? 'edit' : 'add'}">
                 <c:if test="${editMode}">
                     <input type="hidden" name="categoryId" value="${category.categoryId}">
                 </c:if>
 
-                <%-- Category Name --%>
                 <div class="form-group">
                     <label class="form-label" for="name">
                         Category Name <span class="required">*</span>
@@ -70,7 +68,6 @@
                     </c:if>
                 </div>
 
-                <%-- Description --%>
                 <div class="form-group">
                     <label class="form-label" for="description">
                         Description <span class="required">*</span>
@@ -87,7 +84,6 @@
                     </c:if>
                 </div>
 
-                <%-- Buttons --%>
                 <div style="display:flex; gap:0.75rem; margin-top:1.5rem;">
                     <button type="submit" class="btn btn-primary">
                         ${editMode ? '💾 Save Changes' : '➕ Create Category'}

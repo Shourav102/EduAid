@@ -13,11 +13,11 @@ import java.util.Set;
  *
  * Applied to ALL URLs ("/*").
  * Logic:
- *  1. Public paths (login, register, about, contact, CSS, JS) are always allowed through.
+ *  1. Public paths (login, register, home, about, contact, CSS, JS) are always allowed through.
  *  2. Any /admin/* path requires role = ADMIN.
  *  3. Any /user/*  path requires role = DONOR or RECIPIENT.
- *  4. Unauthenticated users trying to access protected paths → redirected to /auth?action=login.
- *  5. Wrong-role users → redirected to /error/403.jsp.
+ *  4. Unauthenticated users trying to access protected paths → redirected to login.
+ *  5. Wrong-role users → redirected to error403.jsp.
  *
  * MVC Role: FILTER (middleware - sits before any Controller)
  */
@@ -26,15 +26,17 @@ public class AuthFilter implements Filter {
 
     // Paths that do NOT require authentication (public access)
     private static final Set<String> PUBLIC_PATHS = new HashSet<>(Arrays.asList(
-        "/auth",
-        "/about",
-        "/contact",
-        "/error"
+            "/auth",
+            "/about",
+            "/contact",
+            "/home",
+            "/index",
+            "/error"
     ));
 
     // Static resource prefixes that are always public
     private static final String[] PUBLIC_PREFIXES = {
-        "/css/", "/js/", "/images/", "/favicon.ico"
+            "/css/", "/js/", "/images/", "/favicon.ico"
     };
 
     @Override
@@ -104,7 +106,7 @@ public class AuthFilter implements Filter {
         for (String prefix : PUBLIC_PREFIXES) {
             if (path.startsWith(prefix)) return true;
         }
-        // Check root path (index page)
+        // Check root path and index
         if (path.equals("/") || path.isEmpty()) return true;
 
         // Check registered public paths
