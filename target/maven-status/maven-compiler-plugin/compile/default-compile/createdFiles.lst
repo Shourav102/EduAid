@@ -1,6 +1,7 @@
 com\eduaid\dao\UserDAO.class
 com\eduaid\dao\ResourceDAO.class
 com\eduaid\model\Inquiry.class
+com\eduaid\util\CookiesUtils.class
 com\eduaid\controller\ContactController.class
 com\eduaid\model\Resource.class
 com\eduaid\service\CategoryService.class
@@ -12,6 +13,7 @@ com\eduaid\controller\AuthController.class
 com\eduaid\controller\MarketingController.class
 com\eduaid\controller\ResourceApiController.class
 com\eduaid\controller\AdminController.class
+com\eduaid\util\SessionUtils.class
 com\eduaid\controller\AboutController.class
 com\eduaid\controller\HomeController.class
 com\eduaid\util\DBConnection.class
